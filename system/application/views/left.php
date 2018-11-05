@@ -4,7 +4,7 @@
 <title>Учет электроэнергии. Промышленный отдел</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="<?php  echo base_url();?>css/1.css" type="text/css" media="screen,projection" />
-
+<link rel="stylesheet" href="/css/fullpage.css" type="text/css" media="screen,projection"/>
 </head>
  
 <body>
