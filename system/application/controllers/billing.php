@@ -82,7 +82,7 @@ class Billing extends Controller
                 die('<h1>Доступ запрещен</h1>');
             }
         }
-		#$this->output->enable_profiler(TRUE);
+        #$this->output->enable_profiler(TRUE);
     }
 
     function left()
@@ -486,8 +486,8 @@ class Billing extends Controller
         $this->db->limit(1);
         $data['last_ins_check'] = $this->db->get("industry.billing_point_ins_check")->row();
         #ins_check
-		
-		
+
+
         if ($query->num_rows() > 0) $data['snyat'] = 'yes'; else $data['snyat'] = 'false';
         $this->load->view("counters_view", $data);
         if ($data['snyat'] == "false")
@@ -922,11 +922,11 @@ class Billing extends Controller
         $this->db->where('period_id', $_POST['period_id']);
         $this->db->where('firm_id', $_POST['firm_id']);
         $isset_fine = $this->db->get("industry.fine_source_data")->num_rows();
-		if ((isset($isset_fine)) and ($isset_fine > 0)) {
-			$this->db->where('period_id', $_POST['period_id']);
-			$this->db->where('firm_id', $_POST['firm_id']);
-			$data['fine_value'] = $this->db->get("industry.fine_source_data")->row()->fine_value;
-		}
+        if ((isset($isset_fine)) and ($isset_fine > 0)) {
+            $this->db->where('period_id', $_POST['period_id']);
+            $this->db->where('firm_id', $_POST['firm_id']);
+            $data['fine_value'] = $this->db->get("industry.fine_source_data")->row()->fine_value;
+        }
 
         $this->load->plugin('chislo');
         $sql = "SELECT * FROM industry.org_info";
@@ -1399,13 +1399,13 @@ class Billing extends Controller
         $count = $this->db->query($sql)->row()->count;
         if ($count == 0) {
             $count = -1;
-			
+
             #ins_check
             $bill_id = $this->uri->segment(3);
             $this->db->where("bill_id", $bill_id);
             $this->db->delete("industry.billing_point_ins_check");
             ##ins_check			
-			
+
             $sql = "delete from industry.billing_point where id=" . $this->uri->segment(3);
             $this->db->query($sql);
         }
@@ -1515,9 +1515,9 @@ class Billing extends Controller
 
     function oplata_import()
     {
-        
+
         $this->db->query(
-        "
+            "
         delete from industry.oplata where data between  
            (select period.begin_date from industry.period
                  left join industry.sprav on sprav.name='current_period'
@@ -1531,9 +1531,9 @@ class Billing extends Controller
             sum/(1+industry.current_nds()/100),industry.current_nds() from industry.oplata_buf 
             where industry.firm_id_by_dogovor(dog) is not null and industry.schet_id_by_name(schet) is not null
 			AND oplata_buf.vo <> 4"
-            );
-        
-		$this->db->query(
+        );
+
+        $this->db->query(
             "DELETE FROM industry.fine_oplata WHERE data BETWEEN
                (SELECT period.begin_date FROM industry.period
                      LEFT JOIN industry.sprav ON sprav.name='current_period'
@@ -1721,7 +1721,7 @@ class Billing extends Controller
         $this->session->set_userdata($_POST);
         redirect('billing/oplata');
     }
-	/*
+    /*
     function adding_oplata()
     {
         $sql = "SELECT count(*) FROM industry.firm WHERE dogovor=" . $_POST['dogovor'];
@@ -1804,9 +1804,9 @@ class Billing extends Controller
         }
         redirect('billing/oplata');
     }*/
-	
-	#метод переключения
-	function adding_oplata()
+
+    #метод переключения
+    function adding_oplata()
     {
         $sql = "select count(*) from industry.firm where dogovor=" . $_POST['dogovor'];
         $count = $this->db->query($sql)->row()->count;
@@ -2749,8 +2749,8 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
         $this->db->query($sql);
         redirect("billing/add_akt_with_tariff/" . $this->uri->segment(3));
     }
-	
-	/*FINE*/
+
+    /*FINE*/
     /*начальная страница по пене*/
     public function fine_info()
     {
@@ -3304,24 +3304,24 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
 
         $this->load->view('fine/fine_2_re', $data);
     }
-	
-	public function pre_report_2000()
-	{
-		$data['period_years'] = $this->db->get("industry.period_years")->result();
-		$this->left();
-		$this->load->view("other_reports/pre_report_2000", $data);
-		$this->load->view("right");
-	}
 
-	public function report_2000()
-	{
+    public function pre_report_2000()
+    {
+        $data['period_years'] = $this->db->get("industry.period_years")->result();
+        $this->left();
+        $this->load->view("other_reports/pre_report_2000", $data);
+        $this->load->view("right");
+    }
+
+    public function report_2000()
+    {
         $period_year = $_POST['period_year'];
         $this->db->where('period_year', $period_year);
         $data['report'] = $this->db->get("industry.report_2000")->result();
         $this->load->view("other_reports/report_2000", $data);
-	}
-	
-	function fine_oplata_delete()
+    }
+
+    function fine_oplata_delete()
     {
         $sql = "DELETE FROM industry.fine_oplata WHERE id=" . $this->uri->segment(3);
         $this->db->query($sql);
@@ -3349,13 +3349,13 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
 
     }
 
-	public function counter_stat_report()
+    public function counter_stat_report()
     {
         $data['report'] = $this->db->get("industry.counter_stat_report")->result();
         $this->load->view("other_reports/counter_stat_report/report", $data);
     }
 
-	public function pre_narzad_po_ture()
+    public function pre_narzad_po_ture()
     {
         $this->left();
         $this->load->view("other_reports/narzad_po_ture/pre");
@@ -3389,7 +3389,7 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
         $data['report'] = $this->db->get("industry.counter_by_type")->result();
         $this->load->view("other_reports/counter_by_type/report", $data);
     }
-	
+
     function isRussian($text)
     {
         return preg_match('/[А-Яа-яЁё]/u', $text);
@@ -3397,14 +3397,11 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
 
     function perenos_rek1()
     {
-        header('Content-Type: text/html; charset="utf-8"');
-
-        $this->db->order_by("dog");
-        $nach = $this->db->get("industry.perenos_rekvizit");
-        set_time_limit(0);
         $db = dbase_open("c:/oplata/rekv.dbf", 2);
-
         if ($db) {
+            header('Content-Type: text/html; charset="utf-8"');
+            $this->db->order_by("dog");
+            $nach = $this->db->get("industry.perenos_rekvizit");
             for ($i = 1; $i < dbase_numrecords($db) + 1; $i++) {
                 dbase_delete_record($db, $i);
             }
@@ -3423,9 +3420,9 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
 
                 //находим некорректные БИКи и МФО банков
                 if ((mb_strlen(trim($n->mfo), 'UTF-8') != 8) and ($n->mfo != '0000000000')) {
-                    $ei_mfo[$n->bank]['len'] = mb_strlen(trim($n->mfo), 'UTF-8');
-                    $ei_mfo[$n->bank]['mfo'] = trim($n->mfo);
-					$ei_mfo[$n->bank]['dog'] = trim($n->dog);
+                    $ei_mfo[$n->dog]['len'] = mb_strlen(trim($n->mfo), 'UTF-8');
+                    $ei_mfo[$n->dog]['mfo'] = trim($n->mfo);
+                    $ei_mfo[$n->dog]['bank'] = trim($n->bank);
                     $e++;
                 }
 
@@ -3484,29 +3481,21 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
             }
             dbase_close($db2);
 
-            $ei_mfo = ($ei_mfo);
-
-            echo "<br><br>";
-
             echo "<b>Договора с некорректными БИНами:</b><br>";
             foreach ($incorrected_bins as $ib) {
                 echo $ib['dog'] . ": " . $ib['bin'] . "<br>";
             }
-
-            echo "<br><br>";
-
+            echo "<br>";
             echo "<b>Банки с некорректными МФО:</b><br>";
             foreach ($ei_mfo as $key => $ib) {
-                echo $ib['dog'].":
-				".$key . ": " . $ib['mfo'] . ": " . $ib['len'] . "<br>";
+                echo $key . ": " . $ib['bank'] . ": " . $ib['mfo'] . ":" . $ib['len']."<br>";
             }
-
         } else {
-            echo "База не открыта";
+            echo "DBF file is busy!";
         }
     }
-	
-	
+
+
     private function export_to_excel($view_name, $data, $title = "Example")
     {
         $title .= '_' . date("Ymd");
@@ -3516,9 +3505,9 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
         header("Expires: 0");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         $this->load->view($view_name, $data);
-    }	
-	
-	#ins_check
+    }
+
+    #ins_check
     public function add_ins_check()
     {
         if (empty($_POST['data']) or (empty($_POST['act_number']))) {
@@ -3545,7 +3534,7 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
     }
     #ins_check	
 
-   #transformator
+    #transformator
     public function transformator()
     {
         $bill_id = $this->uri->segment(3);
@@ -3596,8 +3585,9 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
         $this->db->delete("industry.transformator");
         redirect("billing/point/" . $bill_id);
     }
-    #transformator	
-	
+
+    #transformator
+
     public function gos_poverka()
     {
 
@@ -3607,8 +3597,8 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
         } else {
             $this->load->view("other_reports/gos_poverka/report", $data);
         }
-    }	
-	
+    }
+
     function tariff_list()
     {
         $this->db->where("period_id = industry.current_period_id()");
@@ -3711,8 +3701,8 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
         $this->db->where("id", $tariff_id);
         $this->db->delete("industry.tariff");
         redirect("billing/tariff_list");
-    }	
-	
+    }
+
 }
 
 ?>
