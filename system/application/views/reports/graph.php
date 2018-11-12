@@ -4,7 +4,7 @@
     <title>example5</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <!--[if IE]>
-    <script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="/excanvas.js"></script><![endif]-->
     <script language="javascript" type="text/javascript" src="/jquery-1.3.2.min.js"></script>
     <script language="javascript" type="text/javascript" src="/jquery.jqplot.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/jquery.jqplot.css"/>
