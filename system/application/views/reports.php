@@ -43,3 +43,4 @@ echo anchor("billing/pre_analiz_mnogourovneviy","Анализ по многоу�
 <li><a href="<?php echo site_url('billing/pre_narzad_po_ture'); ?>"><?php echo 'Наряд-задание по ТУРЭ'; ?></a></li>
 <li><a href="<?php echo site_url('billing/counter_by_type'); ?>"><?php echo 'Количество счетчиков по типам'; ?></a></li>
 <li><a href="<?php echo site_url('billing/gos_poverka'); ?>"><?php echo 'Гос.поверка'; ?></a></li>
+<li><a href="<?php echo site_url('billing/kontragent_rek'); ?>"><?php echo 'Список контрагентов с реквизитами'; ?></a></li>
