@@ -3940,6 +3940,67 @@ where firm_id={$this->uri->segment(3)} and data_finish is null";
         $this->export_to_excel("other_reports/migration", $data,"щучинские_сэс");
 //        $this->load->view("other_reports/migration", $data);
     }
+	
+	/*ADD PERIODS*/
+	function add_periods()
+	{
+		$months = array(
+			1 => array('name' => 'Январь', 'end_day' => 31),
+			2 => array('name' => 'Февраль', 'end_day' => 28),
+			3 => array('name' => 'Март', 'end_day' => 31),
+			4 => array('name' => 'Апрель', 'end_day' => 30),
+			5 => array('name' => 'Май', 'end_day' => 31),
+			6 => array('name' => 'Июнь', 'end_day' => 30),
+			7 => array('name' => 'Июль', 'end_day' => 31),
+			8 => array('name' => 'Август', 'end_day' => 31),
+			9 => array('name' => 'Сентябрь', 'end_day' => 30),
+			10 => array('name' => 'Октябрь', 'end_day' => 31),
+			11 => array('name' => 'Ноябрь', 'end_day' => 30),
+			12 => array('name' => 'Декабрь', 'end_day' => 31)
+		);
+
+		$last_period_info = $this->db->query("SELECT id, begin_date, end_date, name FROM industry.period WHERE id IN (SELECT max(id) FROM industry.period)")->row();
+		$last_period_id = (int)$last_period_info->id;
+		$last_period_date = explode('-', $last_period_info->begin_date);
+		$start_day = '01';
+		$end_day = 0;
+		$start_month = 1;
+		$end_month = 12;
+		$new_months = array();
+		if ($last_period_date[1] < 12) {
+			$start_month = (string)($last_period_date[1] + 1);
+			$start_year = (int)$last_period_date[0];
+		} else {
+			$start_year = $last_period_date[0] + 1;
+		}
+		$j = 0;
+		for ($i = $start_month; $i <= $end_month; $i++) {
+			if (($i == 2) and ($start_year % 4 == 0)) {
+				$end_day = $months[$i]['end_day'] + 1;
+			} else {
+				$end_day = $months[$i]['end_day'];
+			}
+			$new_months[$j]['id'] = ++$last_period_id;
+			$new_months[$j]['begin_date'] = $start_year . "-" . sprintf("%02d", $i) . "-" . $start_day;
+			$new_months[$j]['end_date'] = $start_year . "-" . sprintf("%02d", $i) . "-" . $end_day;
+			$new_months[$j]['name'] = $months[$i]['name'] . " " . $start_year . " г.";
+			$new_months[$j]['nds'] = 12.0000;
+			$j++;
+		}
+		for ($j = 0; $j < count($new_months); $j++) {
+			$data = array(
+				'id' => $new_months[$j]['id'],
+				'begin_date' => $new_months[$j]['begin_date'],
+				'end_date' => $new_months[$j]['end_date'],
+				'name' => $new_months[$j]['name'],
+				'nds' => $new_months[$j]['nds']
+			);
+			$this->db->insert("industry.period", $data);
+		}
+		echo "added";
+		#redirect("billing/period");
+	}
+	/*END ADD PERIODS*/
 }
 
 ?>
